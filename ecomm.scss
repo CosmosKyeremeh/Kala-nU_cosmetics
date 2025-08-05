@@ -1,0 +1,152 @@
+$cos: #4834D4;
+$mos: #EB4D4B;
+
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  transition: all .2s linear;
+  text-transform: capitalize;
+}
+
+html{
+  font-size: 63%;
+  scroll-behavior: smooth;
+}
+
+body{
+  overflow: hidden;
+}
+
+#header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2.25rem;
+  color: #fff;
+
+
+  i{
+    padding: .5rem;
+  }
+
+  h1{
+    display: inline;
+  }
+
+  &:hover{
+    text-decoration: none;
+  }
+  }
+
+  .left{
+    .fa-shopping-cart{
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .search-container{
+      display: inline;
+      position: relative;
+
+      #search{
+        position: absolute;
+        top: -1.5rem;
+        right: .8rem;
+        height: 3.5rem;
+        width: 3.5rem;
+        font-size: 1.5rem;
+        padding: 0 1rem;
+        border: none;
+        outline: none;
+        border-radius: 5rem;
+
+        &:hover,
+        &:focus{
+          width: 25rem;
+        }
+      }
+
+      .fa-search{
+        position: absolute;
+        top: -.7rem; left: -3.5rem; 
+        cursor: pointer;
+        z-index: 1;
+        color: #333;
+
+        &:hover ~ #search{
+          width: 25rem;
+        }
+      }
+    }
+  }
+
+  .navbar{
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0,0,0,.9);
+    padding: 0;
+    display: none;
+
+    ul{
+      height: 100%;
+      width: 35rem;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      list-style: none;
+
+      li{
+        margin: 0.5rem 0;
+
+        a{
+          display: block;
+          height: 4rem;
+          width: 25rem;
+          background: #fff;
+          color: #333;
+          border-radius: 5rem;
+          text-align: center;
+          font-size: 2rem;
+          line-height: 4rem;
+
+          &:hover{
+            text-decoration: none;
+            background: $mos;
+            letter-spacing: .5rem;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+
+.fa-bars{
+  font-size: 3rem;
+  z-index: 10000;
+  cursor: pointer;
+  
+}
+
+
+
+/* home styling */
+#home{
+  min-height: 100vh;
+  width: 100vw;
+  background: #333;
+}
+
+.fa-times{
+  transform: translateX(27rem);
+  padding-top: 1rem;
+}
