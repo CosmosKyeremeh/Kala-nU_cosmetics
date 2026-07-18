@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/*
+  Visual identity: a deliberately restrained palette (rose / gold / cream /
+  ink) instead of a typical e-commerce rainbow of accents. Restraint plus
+  generous whitespace and editorial type is what reads as "premium" rather
+  than a bright, busy discount-store aesthetic.
+*/
+:root {
+  --rose-primary: #c2185b;
+  --rose-light: #f8bbd0;
+  --gold-accent: #d4af37;
+  --cream: #fff8f0;
+  --ink: #14110f;
+  --charcoal: #1c1c1c;
+  --slate: #4a4a4a;
+}
+
+@theme inline {
+  --color-rose-primary: var(--rose-primary);
+  --color-rose-light: var(--rose-light);
+  --color-gold-accent: var(--gold-accent);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-charcoal: var(--charcoal);
+  --color-slate: var(--slate);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+body {
+  font-family: var(--font-body), sans-serif;
+  color: var(--ink);
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display), serif;
+  letter-spacing: -0.01em;
+}
+
+/* Small tracked uppercase label used above editorial headings */
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--rose-primary);
+}
+
+/* Fluid editorial display sizes — scale smoothly between mobile and desktop
+   instead of jumping at breakpoints, which reads as more considered. */
+.text-hero {
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  line-height: 1.02;
+}
+
+.text-display-lg {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.08;
+}
+
+/* Reusable section rhythm so pages share consistent generous whitespace */
+.section {
+  padding-block: clamp(3.5rem, 8vw, 7rem);
+}
+
+::selection {
+  background: var(--rose-light);
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

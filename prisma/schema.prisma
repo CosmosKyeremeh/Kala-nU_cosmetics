@@ -1,0 +1,141 @@
+// GlowCart demo schema — Phase 1 (Foundation)
+// Uses SQLite for zero-setup local demo. Field shapes mirror the PRD's Postgres
+// models; enums are plain Strings and array fields are Json since SQLite
+// doesn't support native enums or scalar lists. Swap the datasource to
+// postgresql (and enums/String[] back) if this ever moves to real deployment.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Role: "CUSTOMER" | "CASHIER" | "ADMIN"
+model User {
+  id                  String   @id @default(cuid())
+  name                String
+  email               String   @unique
+  phone               String?
+  passwordHash        String
+  role                String   @default("CUSTOMER")
+  address             String?
+  city                String?
+  region              String?
+  notificationsEnabled Boolean @default(true)
+  createdAt           DateTime @default(now())
+
+  orders    Order[]
+  cartItems CartItem[]
+}
+
+// category: "BODY_SPRAY" | "SKINCARE" | "DEODORANT" | "LIP_CARE" | "HAIR_CARE" | "OTHER"
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  tagline     String? // short transformation-focused micro-copy for the cinematic hero
+  price       Float
+  category    String
+  images      Json // String[] of image URLs
+  stock       Int      @default(0)
+  isFeatured  Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  badge       String? // "New" | "Best Seller" | "Low Stock"
+  qrCode      String?
+  viewCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  // Cinematic product page + personalization content
+  texture     String? // sensory description used in the "feel the product" scroll section
+  ingredients Json? // String[] of ingredient names
+  shades      Json? // [{ name: string, hex: string }] for lip/foundation/blush shades
+  skinTones   Json? // String[] tags: "fair" | "light" | "medium" | "tan" | "deep"
+  concerns    Json? // String[] tags: "dryness" | "oiliness" | "dullness" | "acne" | "ageing" | "sensitivity"
+
+  orderItems OrderItem[]
+  cartItems  CartItem[]
+  reviews    Review[]
+}
+
+model Review {
+  id           String   @id @default(cuid())
+  productId    String
+  authorName   String
+  rating       Int // 1-5
+  body         String
+  photos       Json? // String[] of image URLs
+  skinTone     String?
+  concern      String?
+  helpfulVotes Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model UgcPost {
+  id           String   @id @default(cuid())
+  image        String
+  caption      String
+  authorHandle String
+  createdAt    DateTime @default(now())
+}
+
+model Bundle {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  image       String
+  price       Float // discounted bundle price
+  productIds  Json // String[] of Product ids included in the bundle
+  createdAt   DateTime @default(now())
+}
+
+model CartItem {
+  id        String @id @default(cuid())
+  userId    String
+  productId String
+  quantity  Int
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+// status: "PLACED" | "CONFIRMED" | "PACKED" | "SHIPPED" | "DELIVERED" | "CANCELLED"
+model Order {
+  id              String   @id @default(cuid())
+  userId          String
+  subtotal        Float
+  deliveryFee     Float
+  total           Float
+  status          String   @default("PLACED")
+  paymentRef      String?
+  paymentStatus   String   @default("pending")
+  shippingAddress String
+  city            String
+  region          String
+  phone           String
+  trackingCode    String   @unique @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  unitPrice Float
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
