@@ -62,12 +62,20 @@ export default async function OrderConfirmedPage({
         </div>
       </div>
 
-      <Link
-        href="/products"
-        className="mt-8 inline-block rounded-full bg-rose-primary px-8 py-3 font-semibold text-white hover:bg-rose-primary/90"
-      >
-        Continue Shopping
-      </Link>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <Link
+          href={`/track/${order.trackingCode}`}
+          className="rounded-full bg-rose-primary px-8 py-3 font-semibold text-white hover:bg-rose-primary/90"
+        >
+          Track Order
+        </Link>
+        <Link
+          href="/products"
+          className="rounded-full border border-rose-light px-8 py-3 font-semibold text-ink hover:border-rose-primary hover:text-rose-primary"
+        >
+          Continue Shopping
+        </Link>
+      </div>
     </div>
   );
 }

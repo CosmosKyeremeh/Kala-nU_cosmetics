@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatGHS } from "@/lib/utils";
+import { NotificationToggle } from "@/components/NotificationToggle";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -43,6 +44,9 @@ export default async function ProfilePage() {
             <dd className="font-medium">{user.region ?? "—"}</dd>
           </div>
         </dl>
+        <div className="mt-6 border-t border-rose-light/40 pt-4">
+          <NotificationToggle initialEnabled={user.notificationsEnabled} />
+        </div>
       </div>
 
       <div className="mt-10">
@@ -68,10 +72,10 @@ export default async function ProfilePage() {
                   </span>
                   <span className="font-medium">{formatGHS(order.total)}</span>
                   <Link
-                    href={`/order-confirmed?orderId=${order.id}`}
+                    href={`/track/${order.trackingCode}`}
                     className="text-rose-primary hover:underline"
                   >
-                    View
+                    Track Order
                   </Link>
                 </div>
               </li>

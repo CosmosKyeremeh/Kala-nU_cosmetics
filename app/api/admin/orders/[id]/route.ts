@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
+import { sendOrderStatusSms, sendOrderStatusEmail } from "@/lib/notifications";
+import { formatGHS } from "@/lib/utils";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { response } = await requireAdmin();
@@ -30,7 +32,10 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }
 
-  const existing = await prisma.order.findUnique({ where: { id }, include: { items: true } });
+  const existing = await prisma.order.findUnique({
+    where: { id },
+    include: { items: true, user: true },
+  });
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const newStatus = parsed.data.status;
@@ -53,9 +58,30 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     return updated;
   });
 
-  // A real deployment would send SMS/email here (Phase 5). Logged instead
-  // since there's no SMS/email provider wired up for this demo.
-  console.log(`[notify] Order ${order.id} status -> ${newStatus} (would SMS/email customer)`);
+  // Notifications are best-effort — a failure here must never fail the
+  // status update response itself.
+  if (existing.user.notificationsEnabled) {
+    try {
+      if (existing.user.phone) {
+        sendOrderStatusSms({
+          phone: existing.user.phone,
+          name: existing.user.name,
+          orderId: order.id.slice(-8).toUpperCase(),
+          status: newStatus,
+          total: formatGHS(order.total),
+        });
+      }
+      sendOrderStatusEmail({
+        email: existing.user.email,
+        name: existing.user.name,
+        orderId: order.id.slice(-8).toUpperCase(),
+        status: newStatus,
+        trackingCode: order.trackingCode,
+      });
+    } catch (err) {
+      console.error("[notify] failed to send order status notification", err);
+    }
+  }
 
   return NextResponse.json(order);
 }
