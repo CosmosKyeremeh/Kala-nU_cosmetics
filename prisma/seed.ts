@@ -333,8 +333,22 @@ async function main() {
     },
   });
 
+  const adminPasswordHash = await bcrypt.hash("admin123", 10);
+  await prisma.user.upsert({
+    where: { email: "admin@glowcart.gh" },
+    update: { role: "ADMIN" },
+    create: {
+      name: "GlowCart Admin",
+      email: "admin@glowcart.gh",
+      passwordHash: adminPasswordHash,
+      role: "ADMIN",
+      region: "Greater Accra",
+      city: "Accra",
+    },
+  });
+
   console.log(
-    `Seeded ${products.length} products, reviews, ${ugcPosts.length} UGC posts, ${bundles.length} bundles, and 1 demo user (demo@glowcart.gh / password123)`
+    `Seeded ${products.length} products, reviews, ${ugcPosts.length} UGC posts, ${bundles.length} bundles, 1 demo user (demo@glowcart.gh / password123), and 1 admin user (admin@glowcart.gh / admin123)`
   );
 }
 

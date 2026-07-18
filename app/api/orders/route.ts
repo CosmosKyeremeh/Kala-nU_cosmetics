@@ -70,7 +70,7 @@ export async function POST(req: Request) {
         subtotal,
         deliveryFee,
         total,
-        status: "CONFIRMED",
+        status: "PLACED",
         paymentRef,
         paymentStatus: "paid",
         shippingAddress,

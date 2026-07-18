@@ -44,3 +44,7 @@ next-env.d.ts
 # local SQLite dev database (regenerate with `npm run db:push && npm run db:seed`)
 prisma/*.db
 prisma/*.db-journal
+
+# admin-uploaded product images (local-disk stand-in for Cloudinary)
+/public/uploads/*
+!/public/uploads/.gitkeep
