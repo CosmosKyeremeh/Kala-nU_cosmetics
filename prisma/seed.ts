@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { generateProductQr } from "../lib/qrcode";
 
 const prisma = new PrismaClient();
 
@@ -347,8 +348,33 @@ async function main() {
     },
   });
 
+  const cashierPasswordHash = await bcrypt.hash("cashier123", 10);
+  await prisma.user.upsert({
+    where: { email: "cashier@glowcart.gh" },
+    update: { role: "CASHIER" },
+    create: {
+      name: "GlowCart Cashier",
+      email: "cashier@glowcart.gh",
+      passwordHash: cashierPasswordHash,
+      role: "CASHIER",
+      region: "Greater Accra",
+      city: "Accra",
+    },
+  });
+
+  // Auto-generate a QR code (encoding the product id) for every product
+  // that doesn't have one yet, so the POS scanner has something to scan.
+  const productsWithoutQr = await prisma.product.findMany({
+    where: { qrCode: null },
+    select: { id: true },
+  });
+  for (const product of productsWithoutQr) {
+    const qrCode = await generateProductQr(product.id);
+    await prisma.product.update({ where: { id: product.id }, data: { qrCode } });
+  }
+
   console.log(
-    `Seeded ${products.length} products, reviews, ${ugcPosts.length} UGC posts, ${bundles.length} bundles, 1 demo user (demo@glowcart.gh / password123), and 1 admin user (admin@glowcart.gh / admin123)`
+    `Seeded ${products.length} products (+ QR codes), reviews, ${ugcPosts.length} UGC posts, ${bundles.length} bundles, 1 demo user (demo@glowcart.gh / password123), 1 admin user (admin@glowcart.gh / admin123), and 1 cashier user (cashier@glowcart.gh / cashier123)`
   );
 }
 

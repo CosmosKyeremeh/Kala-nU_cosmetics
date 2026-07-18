@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
 import { slugify } from "@/lib/utils";
+import { generateProductQr } from "@/lib/qrcode";
 import type { Prisma } from "@prisma/client";
 
 export async function GET(req: Request) {
@@ -65,5 +66,8 @@ export async function POST(req: Request) {
     data: { ...data, slug },
   });
 
-  return NextResponse.json(product, { status: 201 });
+  const qrCode = await generateProductQr(product.id);
+  const withQr = await prisma.product.update({ where: { id: product.id }, data: { qrCode } });
+
+  return NextResponse.json(withQr, { status: 201 });
 }

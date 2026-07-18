@@ -10,7 +10,7 @@ const NAV = [
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  // Belt-and-suspenders alongside middleware.ts — never trust a single gate.
+  // Belt-and-suspenders alongside proxy.ts — never trust a single gate.
   const session = await auth();
   if (!session?.user || session.user.role !== "ADMIN") {
     redirect("/auth/login?callbackUrl=/admin");
