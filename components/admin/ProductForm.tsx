@@ -3,12 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { CATEGORIES, slugify } from "@/lib/utils";
+import { CATEGORIES, BADGES, slugify } from "@/lib/utils";
+import { getCategoryByValue } from "@/lib/categories";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { toStringArray } from "@/lib/types";
 import type { Product } from "@prisma/client";
-
-const BADGES = ["", "New", "Best Seller", "Low Stock"];
 
 export function ProductForm({ product }: { product?: Product }) {
   const router = useRouter();
@@ -19,6 +18,7 @@ export function ProductForm({ product }: { product?: Product }) {
     tagline: product?.tagline ?? "",
     price: product?.price ?? 0,
     category: product?.category ?? "SKINCARE",
+    subcategory: product?.subcategory ?? "",
     stock: product?.stock ?? 0,
     badge: product?.badge ?? "",
     images: toStringArray(product?.images),
@@ -40,6 +40,7 @@ export function ProductForm({ product }: { product?: Product }) {
       ...form,
       slug: slugify(form.name),
       badge: form.badge || null,
+      subcategory: form.subcategory || null,
       ingredients: form.ingredients
         .split(",")
         .map((s) => s.trim())
@@ -149,12 +150,28 @@ export function ProductForm({ product }: { product?: Product }) {
           <label className="mb-1 block text-sm font-medium">Category</label>
           <select
             value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
+            onChange={(e) => setForm({ ...form, category: e.target.value, subcategory: "" })}
             className="w-full rounded-lg border border-rose-light px-4 py-2.5"
           >
             {CATEGORIES.map((c) => (
               <option key={c.value} value={c.value}>
                 {c.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium">Subcategory</label>
+          <select
+            value={form.subcategory}
+            onChange={(e) => setForm({ ...form, subcategory: e.target.value })}
+            disabled={(getCategoryByValue(form.category)?.subcategories.length ?? 0) === 0}
+            className="w-full rounded-lg border border-rose-light px-4 py-2.5 disabled:bg-cream disabled:text-slate"
+          >
+            <option value="">None</option>
+            {getCategoryByValue(form.category)?.subcategories.map((s) => (
+              <option key={s.slug} value={s.slug}>
+                {s.label}
               </option>
             ))}
           </select>

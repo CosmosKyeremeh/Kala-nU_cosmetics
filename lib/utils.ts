@@ -1,3 +1,5 @@
+import { TOP_CATEGORIES } from "@/lib/categories";
+
 export function formatGHS(amount: number): string {
   return `₵${amount.toLocaleString("en-GH", {
     minimumFractionDigits: 2,
@@ -37,14 +39,9 @@ export const GHANA_REGIONS = [
   "Ahafo",
 ] as const;
 
-export const CATEGORIES = [
-  { value: "BODY_SPRAY", label: "Body Spray" },
-  { value: "SKINCARE", label: "Skincare" },
-  { value: "DEODORANT", label: "Deodorant" },
-  { value: "LIP_CARE", label: "Lip Care" },
-  { value: "HAIR_CARE", label: "Hair Care" },
-  { value: "OTHER", label: "Other" },
-] as const;
+export const CATEGORIES = TOP_CATEGORIES.map((c) => ({ value: c.value, label: c.label }));
+
+export const BADGES = ["", "New", "Best Seller", "Sale", "Low Stock"] as const;
 
 export function categoryLabel(value: string): string {
   return CATEGORIES.find((c) => c.value === value)?.label ?? value;

@@ -48,3 +48,7 @@ prisma/*.db-journal
 # admin-uploaded product images (local-disk stand-in for Cloudinary)
 /public/uploads/*
 !/public/uploads/.gitkeep
+
+# raw source photography — only the curated/renamed copies in
+# public/images/categories are actually used by the app
+/images/

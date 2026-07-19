@@ -32,7 +32,8 @@ model User {
   scanSessions ScanSession[]
 }
 
-// category: "BODY_SPRAY" | "SKINCARE" | "DEODORANT" | "LIP_CARE" | "HAIR_CARE" | "OTHER"
+// category: "MAKEUP" | "SKINCARE" | "HAIR_CARE" | "BATH_BODY" | "FRAGRANCE" | "GIFT_SETS" | "TOOLS_ACCESSORIES"
+// subcategory: slug from the matching entry's subcategories in lib/categories.ts (optional)
 model Product {
   id          String   @id @default(cuid())
   name        String
@@ -41,6 +42,7 @@ model Product {
   tagline     String? // short transformation-focused micro-copy for the cinematic hero
   price       Float
   category    String
+  subcategory String?
   images      Json // String[] of image URLs
   stock       Int      @default(0)
   isFeatured  Boolean  @default(false)

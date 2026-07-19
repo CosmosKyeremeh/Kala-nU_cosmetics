@@ -7,10 +7,12 @@ import type { Prisma } from "@prisma/client";
 type SearchParams = { [key: string]: string | undefined };
 
 async function ProductResults({ searchParams }: { searchParams: SearchParams }) {
-  const { category, search, sort, minPrice, maxPrice } = searchParams;
+  const { category, subcategory, search, sort, badge, minPrice, maxPrice } = searchParams;
 
   const where: Prisma.ProductWhereInput = { isPublished: true };
   if (category) where.category = category;
+  if (subcategory) where.subcategory = subcategory;
+  if (badge) where.badge = badge;
   if (search) where.name = { contains: search };
   if (minPrice || maxPrice) {
     where.price = {
