@@ -13,6 +13,7 @@ export function ImageUploader({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [urlInput, setUrlInput] = useState("");
 
   async function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
@@ -35,6 +36,17 @@ export function ImageUploader({
     onChange([...images, ...uploaded]);
   }
 
+  function addUrl() {
+    const url = urlInput.trim();
+    if (!url) return;
+    if (images.length >= 5) {
+      toast.error("Maximum 5 images per product");
+      return;
+    }
+    onChange([...images, url]);
+    setUrlInput("");
+  }
+
   return (
     <div>
       <div
@@ -55,6 +67,29 @@ export function ImageUploader({
           hidden
           onChange={(e) => handleFiles(e.target.files)}
         />
+      </div>
+
+      <div className="mt-2 flex gap-2">
+        <input
+          type="url"
+          value={urlInput}
+          onChange={(e) => setUrlInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addUrl();
+            }
+          }}
+          placeholder="Or paste an image URL"
+          className="flex-1 rounded-lg border border-rose-light px-3 py-2 text-sm"
+        />
+        <button
+          type="button"
+          onClick={addUrl}
+          className="rounded-lg border border-rose-light px-4 py-2 text-sm font-medium text-ink hover:border-rose-primary hover:text-rose-primary"
+        >
+          Add
+        </button>
       </div>
 
       {images.length > 0 && (

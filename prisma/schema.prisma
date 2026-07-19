@@ -1,15 +1,14 @@
-// GlowCart demo schema — Phase 1 (Foundation)
-// Uses SQLite for zero-setup local demo. Field shapes mirror the PRD's Postgres
-// models; enums are plain Strings and array fields are Json since SQLite
-// doesn't support native enums or scalar lists. Swap the datasource to
-// postgresql (and enums/String[] back) if this ever moves to real deployment.
+// GlowCart schema — Postgres (Neon) so it survives Vercel's serverless,
+// ephemeral filesystem. Fields still use Json/String instead of native
+// Postgres enums/arrays to keep the shape identical to the original SQLite
+// version this was ported from — no data-shape migration needed either way.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

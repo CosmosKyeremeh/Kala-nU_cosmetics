@@ -14,6 +14,19 @@ export async function POST(req: Request) {
   const { response } = await requireAdmin();
   if (response) return response;
 
+  // Vercel's filesystem is read-only/ephemeral at runtime, so writing to
+  // /public/uploads only works in local dev. Fail with a clear message
+  // instead of a raw 500 when this is genuinely deployed there.
+  if (process.env.VERCEL) {
+    return NextResponse.json(
+      {
+        error:
+          "Image uploads aren't available in this demo deployment (no persistent file storage configured). Paste an image URL instead.",
+      },
+      { status: 501 }
+    );
+  }
+
   const formData = await req.formData();
   const file = formData.get("file");
 
