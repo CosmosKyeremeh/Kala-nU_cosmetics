@@ -3,7 +3,12 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { TOP_CATEGORIES } from "@/lib/categories";
+import { TOP_CATEGORIES, HIGHLIGHT_LINKS, subcategoryIcon } from "@/lib/categories";
+
+const HIGHLIGHT_STYLES: Record<string, string> = {
+  new: "bg-emerald-600/10 text-emerald-700 hover:bg-emerald-600/20",
+  sale: "bg-rose-primary/10 text-rose-primary hover:bg-rose-primary/20",
+};
 
 export function MegaMenu() {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
@@ -44,7 +49,7 @@ export function MegaMenu() {
 
           {cat.subcategories.length > 0 && (
             <div
-              className={`absolute left-1/2 top-full z-50 w-[520px] -translate-x-1/2 pt-2 transition ${
+              className={`absolute left-1/2 top-full z-50 w-[560px] -translate-x-1/2 pt-2 transition ${
                 openSlug === cat.slug
                   ? "pointer-events-auto opacity-100"
                   : "pointer-events-none translate-y-1 opacity-0"
@@ -56,8 +61,17 @@ export function MegaMenu() {
                     <Link
                       key={sub.slug}
                       href={`/category/${cat.slug}?sub=${sub.slug}`}
-                      className="rounded-lg px-2 py-1.5 text-sm text-charcoal hover:bg-rose-light/20 hover:text-rose-primary"
+                      className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm text-charcoal hover:bg-rose-light/20 hover:text-rose-primary"
                     >
+                      <span className="relative block h-8 w-8 shrink-0 overflow-hidden rounded-full bg-rose-light/20">
+                        <Image
+                          src={subcategoryIcon(cat, sub)}
+                          alt=""
+                          fill
+                          sizes="32px"
+                          className="object-cover"
+                        />
+                      </span>
                       {sub.label}
                     </Link>
                   ))}
@@ -79,6 +93,16 @@ export function MegaMenu() {
             </div>
           )}
         </div>
+      ))}
+
+      {HIGHLIGHT_LINKS.map((link) => (
+        <Link
+          key={link.href}
+          href={link.href}
+          className={`ml-1 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${HIGHLIGHT_STYLES[link.tone]}`}
+        >
+          {link.label}
+        </Link>
       ))}
     </nav>
   );

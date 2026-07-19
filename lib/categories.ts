@@ -3,7 +3,7 @@
 // field. Hero images are real photography supplied for this project,
 // served from /public/images/categories.
 
-export type Subcategory = { label: string; slug: string };
+export type Subcategory = { label: string; slug: string; icon?: string };
 
 export type TopCategory = {
   value: string;
@@ -22,10 +22,10 @@ export const TOP_CATEGORIES: TopCategory[] = [
     image: "/images/categories/makeup-hero.jpg",
     blurb: "Face, eyes, lips and nails — colour that lasts through Accra heat.",
     subcategories: [
-      { label: "Face", slug: "face" },
+      { label: "Face", slug: "face", icon: "/images/categories/makeup-face.jpg" },
       { label: "Eyes", slug: "eyes" },
       { label: "Lips", slug: "lips" },
-      { label: "Nails", slug: "nails" },
+      { label: "Nails", slug: "nails", icon: "/images/categories/makeup-nails.jpg" },
     ],
   },
   {
@@ -35,11 +35,19 @@ export const TOP_CATEGORIES: TopCategory[] = [
     image: "/images/categories/skincare-hero.jpg",
     blurb: "Routines built for real skin, real climate, real results.",
     subcategories: [
-      { label: "Cleansers", slug: "cleansers" },
-      { label: "Moisturizers", slug: "moisturizers" },
-      { label: "Serums & Treatments", slug: "serums-treatments" },
+      { label: "Cleansers", slug: "cleansers", icon: "/images/categories/skincare-cleansers.jpg" },
+      { label: "Moisturizers", slug: "moisturizers", icon: "/images/categories/skincare-moisturizers.jpg" },
+      {
+        label: "Serums & Treatments",
+        slug: "serums-treatments",
+        icon: "/images/categories/skincare-serums.jpg",
+      },
       { label: "Sun Protection", slug: "sun-protection" },
-      { label: "Masks & Exfoliators", slug: "masks-exfoliators" },
+      {
+        label: "Masks & Exfoliators",
+        slug: "masks-exfoliators",
+        icon: "/images/categories/skincare-masks.jpg",
+      },
       { label: "Eye Care", slug: "eye-care" },
       { label: "Toners & Mists", slug: "toners-mists" },
     ],
@@ -64,7 +72,11 @@ export const TOP_CATEGORIES: TopCategory[] = [
     blurb: "Everyday rituals for skin that feels as good as it looks.",
     subcategories: [
       { label: "Body Wash & Soap", slug: "body-wash-soap" },
-      { label: "Body Lotion & Oil", slug: "body-lotion-oil" },
+      {
+        label: "Body Lotion & Oil",
+        slug: "body-lotion-oil",
+        icon: "/images/categories/bathbody-lotion.jpg",
+      },
       { label: "Hand Care", slug: "hand-care" },
       { label: "Deodorant", slug: "deodorant" },
       { label: "Shave & Wax", slug: "shave-wax" },
@@ -77,9 +89,13 @@ export const TOP_CATEGORIES: TopCategory[] = [
     image: "/images/categories/fragrance-hero.jpg",
     blurb: "Signature scents — from everyday mists to statement parfum.",
     subcategories: [
-      { label: "Perfume / Eau de Parfum", slug: "perfume" },
+      {
+        label: "Perfume / Eau de Parfum",
+        slug: "perfume",
+        icon: "/images/categories/fragrance-perfume.jpg",
+      },
       { label: "Cologne", slug: "cologne" },
-      { label: "Body Mist", slug: "body-mist" },
+      { label: "Body Mist", slug: "body-mist", icon: "/images/categories/fragrance-bodymist.jpg" },
     ],
   },
   {
@@ -118,10 +134,23 @@ export function subcategoryLabel(category: string, subSlug: string | null | unde
   return getCategoryByValue(category)?.subcategories.find((s) => s.slug === subSlug)?.label ?? subSlug;
 }
 
-// Quick links shown in the utility strip above the mega-menu.
+// A small image per subcategory keeps the mega-menu/accordion visual and
+// tactile; subcategories without their own photo fall back to the parent
+// category's hero shot rather than showing a blank row.
+export function subcategoryIcon(category: TopCategory, sub: Subcategory): string {
+  return sub.icon ?? category.image;
+}
+
+// "New" and "Sale" get their own standalone, visually distinct nav slots
+// (never buried inside a dropdown) — used in the desktop mega-menu row and
+// at the top of the mobile drawer.
+export const HIGHLIGHT_LINKS = [
+  { label: "New", href: "/products?badge=New", tone: "new" },
+  { label: "Sale", href: "/products?badge=Sale", tone: "sale" },
+] as const;
+
+// Secondary utility links shown in the quieter strip above the mega-menu.
 export const QUICK_LINKS = [
-  { label: "New Arrivals", href: "/products?badge=New" },
   { label: "Best Sellers", href: "/products?badge=Best+Seller" },
-  { label: "Sale", href: "/products?badge=Sale" },
   { label: "Gift Sets", href: "/bundles" },
 ] as const;

@@ -28,12 +28,13 @@ export async function Navbar() {
 
         <MegaMenu />
 
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="hidden items-center gap-3 sm:gap-4 md:flex">
           <NavUserMenu user={session?.user ?? null} />
           <CartButton />
-          <MobileNav />
         </div>
       </div>
+
+      <MobileNav user={session?.user ?? null} />
     </header>
   );
 }
