@@ -31,7 +31,7 @@ export function MobileNav({ user }: Props) {
   }
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       {/* Bottom tab bar — cosmetics is a visually-browsed category, so
           categories/cart stay one tap away no matter how far down the
           page the user has scrolled. */}
@@ -102,11 +102,14 @@ export function MobileNav({ user }: Props) {
         }`}
       >
         <div className="flex items-center justify-between border-b border-rose-light/40 px-4 py-4">
-          <p className="font-display text-xl font-semibold text-rose-primary">GlowCart</p>
+          <div>
+            <p className="font-display text-xl font-semibold text-ink">Shop by Category</p>
+            <p className="text-xs text-slate">Browse GlowCart</p>
+          </div>
           <button
             onClick={closeDrawer}
             aria-label="Close menu"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-rose-light text-ink"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-rose-light text-ink"
           >
             ✕
           </button>

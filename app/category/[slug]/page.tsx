@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCategoryBySlug } from "@/lib/categories";
 import { ProductCard } from "@/components/product/ProductCard";
+import { HeroBackdrop } from "@/components/ui/HeroBackdrop";
 
 export default async function CategoryPage({
   params,
@@ -32,14 +32,7 @@ export default async function CategoryPage({
   return (
     <div>
       <section className="relative h-[300px] overflow-hidden sm:h-[420px]">
-        <Image
-          src={category.image}
-          alt={category.label}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
+        <HeroBackdrop src={category.image} alt={category.label} priority />
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/30 to-transparent" />
         <div className="absolute inset-0 flex flex-col items-center justify-end px-4 pb-10 text-center sm:pb-14">
           <p className="eyebrow text-cream/80">GlowCart</p>

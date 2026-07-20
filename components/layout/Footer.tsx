@@ -3,7 +3,7 @@ import { TOP_CATEGORIES } from "@/lib/categories";
 
 export function Footer() {
   return (
-    <footer className="border-t border-rose-light/40 bg-charcoal pb-24 pt-10 text-cream md:pb-10">
+    <footer className="border-t border-rose-light/40 bg-charcoal pb-24 pt-10 text-cream lg:pb-10">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-col justify-between gap-8 sm:flex-row">
           <div>
@@ -49,7 +49,7 @@ export function Footer() {
           </div>
         </div>
         <p className="mt-8 text-xs text-cream/40">
-          Demo build — payments are simulated, no real charges occur.
+          Payments are simulated for testing — no real charges occur.
         </p>
       </div>
     </footer>

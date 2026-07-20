@@ -6,8 +6,8 @@ import Image from "next/image";
 import { TOP_CATEGORIES, HIGHLIGHT_LINKS, subcategoryIcon } from "@/lib/categories";
 
 const HIGHLIGHT_STYLES: Record<string, string> = {
-  new: "bg-emerald-600/10 text-emerald-700 hover:bg-emerald-600/20",
-  sale: "bg-rose-primary/10 text-rose-primary hover:bg-rose-primary/20",
+  new: "bg-emerald-600/10 text-emerald-700 hover:bg-emerald-600/20 hover:shadow-[0_0_16px_-4px_rgba(5,150,105,0.5)]",
+  sale: "bg-rose-primary/10 text-rose-primary hover:bg-rose-primary/20 hover:shadow-[0_0_16px_-4px_rgba(236,64,122,0.5)]",
 };
 
 export function MegaMenu() {
@@ -24,7 +24,7 @@ export function MegaMenu() {
   }
 
   return (
-    <nav className="hidden items-center gap-1 text-sm font-medium text-charcoal md:flex">
+    <nav className="hidden items-center gap-0.5 text-sm font-medium text-charcoal transition-all duration-300 ease-out group-data-[scrolled=true]:gap-0 lg:flex">
       {TOP_CATEGORIES.map((cat) => (
         <div
           key={cat.slug}
@@ -36,7 +36,7 @@ export function MegaMenu() {
         >
           <Link
             href={`/category/${cat.slug}`}
-            className="flex items-center gap-1 rounded-full px-3 py-2 hover:text-rose-primary"
+            className="group/link relative flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 transition-all duration-300 ease-out hover:bg-rose-light/15 hover:text-rose-primary hover:shadow-[0_0_16px_-6px_rgba(236,64,122,0.5)] group-data-[scrolled=true]:px-2 group-data-[scrolled=true]:py-1.5 group-data-[scrolled=true]:text-[13px]"
             aria-expanded={openSlug === cat.slug}
           >
             {cat.label}
@@ -45,23 +45,24 @@ export function MegaMenu() {
                 <path d="M0 0 L5 6 L10 0 Z" />
               </svg>
             )}
+            <span className="pointer-events-none absolute inset-x-2.5 -bottom-0 h-0.5 origin-left scale-x-0 rounded-full bg-rose-primary transition-transform duration-300 ease-out group-hover/link:scale-x-100" />
           </Link>
 
           {cat.subcategories.length > 0 && (
             <div
-              className={`absolute left-1/2 top-full z-50 w-[560px] -translate-x-1/2 pt-2 transition ${
+              className={`absolute left-1/2 top-full z-50 w-[560px] -translate-x-1/2 pt-2 transition duration-200 ease-out ${
                 openSlug === cat.slug
                   ? "pointer-events-auto opacity-100"
                   : "pointer-events-none translate-y-1 opacity-0"
               }`}
             >
-              <div className="flex overflow-hidden rounded-2xl border border-rose-light/40 bg-white shadow-2xl shadow-charcoal/10">
+              <div className="flex overflow-hidden rounded-2xl border border-white/60 bg-white/90 shadow-2xl shadow-charcoal/15 backdrop-blur-xl">
                 <div className="grid flex-1 grid-cols-2 gap-x-6 gap-y-1 p-6">
                   {cat.subcategories.map((sub) => (
                     <Link
                       key={sub.slug}
                       href={`/category/${cat.slug}?sub=${sub.slug}`}
-                      className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm text-charcoal hover:bg-rose-light/20 hover:text-rose-primary"
+                      className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm text-charcoal transition-colors duration-200 ease-out hover:bg-rose-light/20 hover:text-rose-primary"
                     >
                       <span className="relative block h-8 w-8 shrink-0 overflow-hidden rounded-full bg-rose-light/20">
                         <Image
@@ -99,7 +100,7 @@ export function MegaMenu() {
         <Link
           key={link.href}
           href={link.href}
-          className={`ml-1 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${HIGHLIGHT_STYLES[link.tone]}`}
+          className={`ml-1 whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-semibold transition-all duration-300 ease-out group-data-[scrolled=true]:px-3 group-data-[scrolled=true]:py-1 ${HIGHLIGHT_STYLES[link.tone]}`}
         >
           {link.label}
         </Link>

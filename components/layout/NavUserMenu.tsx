@@ -12,7 +12,7 @@ export function NavUserMenu({ user }: Props) {
     return (
       <Link
         href="/auth/login"
-        className="text-sm font-medium text-charcoal hover:text-rose-primary"
+        className="whitespace-nowrap text-sm font-medium text-charcoal transition-colors duration-300 ease-out hover:text-rose-primary"
       >
         Sign in
       </Link>
@@ -20,15 +20,26 @@ export function NavUserMenu({ user }: Props) {
   }
 
   return (
-    <div className="flex items-center gap-3 text-sm">
-      <Link href="/profile" className="font-medium text-charcoal hover:text-rose-primary">
-        Hi, {user.name?.split(" ")[0]}
+    <div className="flex items-center gap-1.5 text-sm">
+      <Link
+        href="/profile"
+        className="whitespace-nowrap font-medium text-charcoal transition-colors duration-300 ease-out hover:text-rose-primary"
+      >
+        {user.name?.split(" ")[0]}
       </Link>
       <button
         onClick={() => signOut({ callbackUrl: "/" })}
-        className="text-slate hover:text-rose-primary"
+        aria-label="Sign out"
+        title="Sign out"
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-slate transition-colors duration-300 ease-out hover:bg-rose-light/20 hover:text-rose-primary"
       >
-        Sign out
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path
+            d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
     </div>
   );

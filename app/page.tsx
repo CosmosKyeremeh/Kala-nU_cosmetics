@@ -5,6 +5,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { RecommendedForYou } from "@/components/product/RecommendedForYou";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { SwipeCarousel } from "@/components/ui/SwipeCarousel";
+import { RotatingHero } from "@/components/home/RotatingHero";
 import { TOP_CATEGORIES } from "@/lib/categories";
 import { toStringArray } from "@/lib/types";
 import { formatGHS } from "@/lib/utils";
@@ -26,29 +27,33 @@ export default async function Home() {
 
   return (
     <div>
-      {/* Cinematic hero — restrained palette, editorial type, generous whitespace */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-rose-light/30 to-cream px-4 py-24 text-center sm:px-6 sm:py-32">
-        <p className="eyebrow">Ghana&apos;s Premium Cosmetics</p>
-        <h1 className="font-display text-hero mx-auto mt-5 max-w-3xl font-semibold text-ink">
-          Glow. Nourish. Shine.
-        </h1>
-        <p className="mx-auto mt-6 max-w-lg text-lg text-slate">
-          Body sprays, skincare, deodorants, lip care and hair care — crafted for
-          Ghana&apos;s climate, made to be felt.
-        </p>
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href="/products"
-            className="rounded-full bg-rose-primary px-9 py-4 font-semibold text-white shadow-xl shadow-rose-primary/25 transition hover:bg-rose-primary/90"
-          >
-            Shop the Collection
-          </Link>
-          <Link
-            href="/quiz"
-            className="rounded-full border border-ink/20 bg-white/60 px-9 py-4 font-semibold text-ink backdrop-blur transition hover:border-rose-primary hover:text-rose-primary"
-          >
-            Find Your Shade
-          </Link>
+      {/* Cinematic hero — rotating backdrop photography behind editorial type */}
+      <section className="relative overflow-hidden px-4 py-28 text-center sm:px-6 sm:py-36">
+        <RotatingHero />
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/55 via-charcoal/45 to-charcoal/70" />
+        <div className="relative z-10">
+          <p className="eyebrow text-cream/80">Ghana&apos;s Premium Cosmetics</p>
+          <h1 className="font-display text-hero mx-auto mt-5 max-w-3xl font-semibold text-cream">
+            Glow. Nourish. Shine.
+          </h1>
+          <p className="mx-auto mt-6 max-w-lg text-lg text-cream/85">
+            Makeup, skincare, hair care, fragrance and body essentials — crafted for
+            Ghana&apos;s climate, made to be felt.
+          </p>
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/products"
+              className="rounded-full bg-rose-primary px-9 py-4 font-semibold text-white shadow-xl shadow-rose-primary/25 transition hover:bg-rose-primary/90"
+            >
+              Shop the Collection
+            </Link>
+            <Link
+              href="/quiz"
+              className="rounded-full border border-cream/50 bg-white/10 px-9 py-4 font-semibold text-cream backdrop-blur transition hover:border-cream hover:bg-white/20"
+            >
+              Find Your Shade
+            </Link>
+          </div>
         </div>
       </section>
 

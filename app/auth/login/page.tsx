@@ -37,9 +37,7 @@ function LoginForm() {
   return (
     <div className="mx-auto max-w-md px-4 py-20 sm:px-6">
       <h1 className="font-display text-3xl font-semibold">Sign In</h1>
-      <p className="mt-2 text-sm text-slate">
-        Demo account: <strong>demo@glowcart.gh</strong> / <strong>password123</strong>
-      </p>
+      <p className="mt-2 text-sm text-slate">Welcome back to GlowCart.</p>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
         <div>
